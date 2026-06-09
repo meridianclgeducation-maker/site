@@ -27,6 +27,9 @@ export function Home() {
             <h1 className="mt-6 text-balance font-display text-4xl font-bold leading-tight text-meridian-ink sm:text-5xl lg:text-6xl">
               {college.name}
             </h1>
+            <p className="mt-1 text-sm font-semibold text-slate-500 sm:text-base">
+              Approved by NSDM, Government of India
+            </p>
             <p className="mt-5 text-balance font-display text-2xl font-bold text-meridian-primary sm:text-3xl">
               {college.tagline}
             </p>
