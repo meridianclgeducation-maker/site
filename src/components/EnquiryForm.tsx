@@ -1,4 +1,4 @@
-import { Send } from "lucide-react";
+import { AlertCircle, CheckCircle2, Loader2, Send } from "lucide-react";
 import { type FormEvent, useState } from "react";
 import { courses } from "../lib/content";
 import { Button } from "./ui/button";
@@ -15,14 +15,15 @@ import {
 } from "./ui/select";
 import { Textarea } from "./ui/textarea";
 
-type FormState = "idle" | "submitted";
+type FormState = "idle" | "submitting" | "success" | "error";
 
 export function EnquiryForm({ compact = false }: { compact?: boolean }) {
   const [formState, setFormState] = useState<FormState>("idle");
   const [courseValue, setCourseValue] = useState("");
   const [courseError, setCourseError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
     if (!courseValue) {
@@ -30,10 +31,48 @@ export function EnquiryForm({ compact = false }: { compact?: boolean }) {
       return;
     }
 
-    setFormState("submitted");
+    setFormState("submitting");
     setCourseError(false);
-    setCourseValue("");
-    event.currentTarget.reset();
+    setErrorMessage("");
+
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+    const body = {
+      name: (formData.get("name") as string).trim(),
+      phone: (formData.get("phone") as string).trim(),
+      course: courseValue,
+      message: ((formData.get("message") as string) ?? "").trim(),
+    };
+
+    try {
+      const res = await fetch("/.netlify/functions/send-enquiry", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+
+      let data: { error?: string; success?: boolean };
+      try {
+        data = await res.json();
+      } catch {
+        setErrorMessage(`Server responded unexpectedly (${res.status}). Please try again.`);
+        setFormState("error");
+        return;
+      }
+
+      if (!res.ok) {
+        setErrorMessage(data.error ?? `Request failed (${res.status}). Please try again.`);
+        setFormState("error");
+        return;
+      }
+
+      setFormState("success");
+      setCourseValue("");
+      form.reset();
+    } catch {
+      setErrorMessage("Network error. Please check your connection and try again.");
+      setFormState("error");
+    }
   }
 
   return (
@@ -64,7 +103,7 @@ export function EnquiryForm({ compact = false }: { compact?: boolean }) {
               id="phone-number"
               required
               name="phone"
-              inputMode="tel"
+              type="tel"
               className="min-h-12 bg-slate-50"
               placeholder="Enter contact number"
             />
@@ -114,14 +153,26 @@ export function EnquiryForm({ compact = false }: { compact?: boolean }) {
             />
           </div>
 
-          <Button type="submit" className="mt-1 min-h-12">
-            <Send data-icon="inline-start" />
-            Send enquiry
+          <Button type="submit" className="mt-1 min-h-12" disabled={formState === "submitting"}>
+            {formState === "submitting" ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : (
+              <Send data-icon="inline-start" />
+            )}
+            {formState === "submitting" ? "Sending..." : "Send enquiry"}
           </Button>
 
-          {formState === "submitted" ? (
-            <p className="rounded-md bg-meridian-success/10 px-4 py-3 text-sm font-semibold text-emerald-700">
-              Thank you. The enquiry has been noted in this demo form.
+          {formState === "success" ? (
+            <p className="flex items-start gap-2 rounded-md bg-emerald-50 px-4 py-3 text-sm font-semibold text-emerald-700">
+              <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0" />
+              Thank you. Your enquiry has been sent. The admissions team will contact you soon.
+            </p>
+          ) : null}
+
+          {formState === "error" ? (
+            <p className="flex items-start gap-2 rounded-md bg-red-50 px-4 py-3 text-sm font-semibold text-red-700">
+              <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" />
+              {errorMessage || "Failed to send enquiry. Please try again."}
             </p>
           ) : null}
         </form>
