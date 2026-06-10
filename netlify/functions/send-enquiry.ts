@@ -1,21 +1,11 @@
 import { Resend } from "resend";
 
 const TO_EMAIL = "meridianclgeducation@gmail.com";
-const FROM_EMAIL = process.env.FROM_EMAIL || "Meridian College <enquiry@meridiancollegeofeducation.in>";
+const FROM_EMAIL = process.env.FROM_EMAIL || "Meridian College <enquiry@meridiancollege.in>";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-function emailHtml({
-  name,
-  phone,
-  course,
-  message,
-}: {
-  name: string;
-  phone: string;
-  course: string;
-  message: string;
-}) {
+function emailHtml({ name, phone, course, message }: { name: string; phone: string; course: string; message: string }) {
   return `<!DOCTYPE html>
 <html>
 <head>
@@ -50,11 +40,7 @@ function emailHtml({
 </html>`;
 }
 
-exports.handler = async (event: {
-  httpMethod: string;
-  body: string | null;
-  headers: Record<string, string>;
-}) => {
+exports.handler = async (event: { httpMethod: string; body: string | null; headers: Record<string, string> }) => {
   if (event.httpMethod !== "POST") {
     return { statusCode: 405, body: JSON.stringify({ error: "Method Not Allowed" }) };
   }
