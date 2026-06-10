@@ -25,7 +25,10 @@ function Header() {
             <MapPin className="h-3.5 w-3.5 text-meridian-primary" aria-hidden="true" />
             {college.address}
           </span>
-          <a className="inline-flex items-center gap-2 text-slate-600 transition hover:text-meridian-primary" href={`mailto:${college.email}`}>
+          <a
+            className="inline-flex items-center gap-2 text-slate-600 transition hover:text-meridian-primary"
+            href={`mailto:${college.email}`}
+          >
             <Mail className="h-3.5 w-3.5 text-meridian-primary" aria-hidden="true" />
             {college.email}
           </a>
@@ -39,23 +42,25 @@ function Header() {
           onClick={() => setIsOpen(false)}
         >
           <span className="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-md border border-meridian-line bg-white p-1">
-            <img
-              src="/images/meridian-logo.jpeg"
-              alt=""
-              className="h-full w-full object-contain"
-            />
+            <img src="/images/meridian-logo.jpeg" alt="" className="h-full w-full object-contain" />
           </span>
           <span className="min-w-0">
-            <span className="block truncate font-display text-lg font-bold leading-tight text-meridian-ink sm:text-xl">
+            <span
+              style={{ fontSize: "24px" }}
+              className="block truncate font-display text-xl font-bold leading-tight text-meridian-ink sm:text-xl"
+            >
               Meridian College
             </span>
             <span className="block truncate text-xs font-bold text-slate-500 sm:text-sm">
-              College of Education
+              Approved by NSDM, Government of India
             </span>
           </span>
         </AppLink>
 
-        <nav className="hidden items-center gap-1 rounded-md border border-meridian-line bg-slate-50 p-1 lg:flex" aria-label="Primary navigation">
+        <nav
+          className="hidden items-center gap-1 rounded-md border border-meridian-line bg-slate-50 p-1 lg:flex"
+          aria-label="Primary navigation"
+        >
           {navigation.map((item) => (
             <AppLink
               key={item.path}
@@ -157,11 +162,7 @@ function Footer() {
           <p className="font-mono text-xs font-bold uppercase text-white/56">Explore</p>
           <nav className="mt-3 grid grid-cols-2 gap-2 text-sm" aria-label="Footer navigation">
             {navigation.map((item) => (
-              <AppLink
-                key={item.path}
-                to={item.path}
-                className="text-white/76 transition hover:text-white"
-              >
+              <AppLink key={item.path} to={item.path} className="text-white/76 transition hover:text-white">
                 {item.label}
               </AppLink>
             ))}
