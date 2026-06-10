@@ -47,7 +47,7 @@ function Header() {
           <span className="min-w-0">
             <span
               style={{ fontSize: "24px" }}
-              className="block truncate  font-display text-xl font-bold leading-tight text-meridian-ink sm:text-xl"
+              className="block truncate text-meridian-primary font-display text-xl font-bold leading-tight text-meridian-ink sm:text-xl"
             >
               Meridian College
             </span>
