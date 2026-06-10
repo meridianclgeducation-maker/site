@@ -41,13 +41,13 @@ function Header() {
           aria-label="Meridian College of Education home"
           onClick={() => setIsOpen(false)}
         >
-          <span className="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-md border border-meridian-line bg-white p-1">
-            <img src="/images/meridian-logo.jpeg" alt="" className="h-full w-full object-contain" />
+          <span className="flex h-24 w-24 shrink-0 items-center justify-center overflow-hidden rounded-md border border-meridian-line bg-white p-1">
+            <img src="/images/meridian-logo.jpeg" alt="" className="h-full w-full object-cover" />
           </span>
           <span className="min-w-0">
             <span
               style={{ fontSize: "24px" }}
-              className="block truncate font-display text-xl font-bold leading-tight text-meridian-ink sm:text-xl"
+              className="block truncate  font-display text-xl font-bold leading-tight text-meridian-ink sm:text-xl"
             >
               Meridian College
             </span>
