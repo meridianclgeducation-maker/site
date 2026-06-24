@@ -8,13 +8,13 @@ export function Contact() {
     <>
       <PageHero
         eyebrow="Contact"
-        title="Talk to Meridian College of Education"
+        title="Talk to Meridian College of Professional Studies"
         text="Reach the college for admission details, course options, timing, and visit guidance."
       >
         <div className="rounded-md border border-meridian-line bg-white p-5 shadow-soft">
           <img
             src="/images/meridian-logo.jpeg"
-            alt="Meridian College of Education logo"
+            alt="Meridian College of Professional Studies logo"
             className="aspect-[16/10] w-full object-contain"
           />
         </div>
@@ -24,7 +24,7 @@ export function Contact() {
         width="100%"
         height="450"
         loading="lazy"
-        referrerpolicy="no-referrer-when-downgrade"
+        referrerPolicy="no-referrer-when-downgrade"
       ></iframe>
       <section className="px-4 py-16 sm:px-6 lg:px-8">
         <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">

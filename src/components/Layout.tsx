@@ -38,7 +38,7 @@ function Header() {
         <AppLink
           to="/"
           className="flex min-w-0 items-center gap-3"
-          aria-label="Meridian College of Education home"
+          aria-label="Meridian College of Professional Studies home"
           onClick={() => setIsOpen(false)}
         >
           <span className="flex h-24 w-24 shrink-0 items-center justify-center overflow-hidden rounded-md border border-meridian-line bg-white p-1">
@@ -170,7 +170,7 @@ function Footer() {
         </div>
       </div>
       <div className="border-t border-white/10 px-4 py-4 text-center text-xs text-white/56">
-        Estd {college.established}. Meridian College of Education.
+        Estd {college.established}. Meridian College of Professional Studies.
       </div>
     </footer>
   );

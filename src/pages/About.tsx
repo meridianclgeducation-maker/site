@@ -10,12 +10,12 @@ export function About() {
       <PageHero
         eyebrow="About the college"
         title="Practical education with a clear student focus"
-        text="Meridian College of Education supports students with career-oriented diploma courses, practical training, and guidance throughout the admission process."
+        text="Meridian College of Professional Studies supports students with career-oriented diploma courses, practical training, and guidance throughout the admission process."
       >
         <div className="rounded-md border border-meridian-line bg-white p-5 shadow-soft">
           <img
             src="/images/meridian-logo.jpeg"
-            alt="Meridian College of Education logo"
+            alt="Meridian College of Professional Studies logo"
             className="aspect-[16/10] w-full object-contain"
           />
         </div>

@@ -7,8 +7,8 @@ export function Gallery() {
     <>
       <PageHero
         eyebrow="Gallery"
-        title="College identity and admissions material"
-        text="A clean place for Meridian College visuals, starting with the current logo and course flyers."
+        title="Admissions and course material"
+        text="Current Meridian College flyers for course streams and admissions information."
       />
 
       <section className="px-4 py-16 sm:px-6 lg:px-8">

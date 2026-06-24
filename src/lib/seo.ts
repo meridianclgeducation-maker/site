@@ -10,35 +10,35 @@ const defaultImage = "/images/meridian-logo.jpeg";
 
 export const seoRoutes: Record<string, SeoRoute> = {
   "/": {
-    title: "Meridian College of Education | Diploma Courses in Kanyakumari",
+    title: "Meridian College of Professional Studies | Diploma Courses in Kanyakumari",
     description:
-      "Meridian College of Education offers practical diploma courses in hospitality, aviation, health education, fire and safety, computers, beauty, and communication.",
+      "Meridian College of Professional Studies offers practical diploma courses in hospitality, aviation, health education, fire and safety, computers, beauty, and communication.",
   },
   "/about": {
-    title: "About Meridian College of Education | Practical Learning",
+    title: "About Meridian College of Professional Studies | Practical Learning",
     description:
-      "Learn about Meridian College of Education, its student-centred approach, practical training focus, academic principles, and education philosophy.",
+      "Learn about Meridian College of Professional Studies, its student-centred approach, practical training focus, academic principles, and education philosophy.",
   },
   "/courses": {
-    title: "Diploma Courses | Meridian College of Education",
+    title: "Diploma Courses | Meridian College of Professional Studies",
     description:
       "Explore diploma streams in hotel management, aviation, fire and safety, health education, beauty, computers, communication, airhostess, and chef training.",
   },
   "/admissions": {
-    title: "Admissions 2026 - 2027 | Meridian College of Education",
+    title: "Admissions 2026 - 2027 | Meridian College of Professional Studies",
     description:
-      "Admissions are open for full-time and part-time diploma programs at Meridian College of Education. Contact the admissions team for course details.",
+      "Admissions are open for full-time and part-time diploma programs at Meridian College of Professional Studies. Contact the admissions team for course details.",
   },
   "/gallery": {
-    title: "Gallery | Meridian College of Education",
+    title: "Gallery | Meridian College of Professional Studies",
     description:
-      "View admissions and course material from Meridian College of Education in Kanyakumari.",
+      "View admissions and course material from Meridian College of Professional Studies in Kanyakumari.",
     image: "/images/meridian-course-flyer-cream.jpeg",
   },
   "/contact": {
-    title: "Contact Meridian College of Education | Kanyakumari",
+    title: "Contact Meridian College of Professional Studies | Kanyakumari",
     description:
-      "Contact Meridian College of Education for admissions, course details, timing, and visit guidance. Call +91 9363201093 or email meridianclgeducation@gmail.com.",
+      "Contact Meridian College of Professional Studies for admissions, course details, timing, and visit guidance. Call +91 9363201093 or email meridianclgeducation@gmail.com.",
   },
 };
 

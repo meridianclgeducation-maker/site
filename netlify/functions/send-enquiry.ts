@@ -2,10 +2,41 @@ import { Resend } from "resend";
 
 const TO_EMAIL = "meridianclgeducation@gmail.com";
 const FROM_EMAIL = process.env.FROM_EMAIL || "Meridian College <enquiry@meridiancollege.in>";
+const RESEND_API_KEY = process.env.RESEND_API_KEY;
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const resend = new Resend(RESEND_API_KEY);
+
+const htmlEscapes: Record<string, string> = {
+  "&": "&amp;",
+  "<": "&lt;",
+  ">": "&gt;",
+  '"': "&quot;",
+  "'": "&#39;",
+};
+
+function escapeHtml(value: string) {
+  return value.replace(/[&<>"']/g, (char) => htmlEscapes[char]);
+}
+
+function json(statusCode: number, body: Record<string, unknown>) {
+  return {
+    statusCode,
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  };
+}
+
+function safeSubjectValue(value: string) {
+  return value.replace(/[\r\n]+/g, " ").trim();
+}
 
 function emailHtml({ name, phone, course, message }: { name: string; phone: string; course: string; message: string }) {
+  const safeName = escapeHtml(name);
+  const safePhone = escapeHtml(phone);
+  const safeCourse = escapeHtml(course);
+  const phoneHref = phone.replace(/[^\d+]/g, "");
+  const safeMessage = escapeHtml(message).replace(/\r?\n/g, "<br />");
+
   return `<!DOCTYPE html>
 <html>
 <head>
@@ -25,13 +56,13 @@ function emailHtml({ name, phone, course, message }: { name: string; phone: stri
 <body>
   <div class="container">
     <span class="badge">New Enquiry</span>
-    <h2>${name} is interested in ${course}</h2>
+    <h2>${safeName} is interested in ${safeCourse}</h2>
     <table>
-      <tr><td>Name</td><td>${name}</td></tr>
-      <tr><td>Phone</td><td><a href="tel:${phone}">${phone}</a></td></tr>
-      <tr><td>Course</td><td>${course}</td></tr>
+      <tr><td>Name</td><td>${safeName}</td></tr>
+      <tr><td>Phone</td><td><a href="tel:${phoneHref}">${safePhone}</a></td></tr>
+      <tr><td>Course</td><td>${safeCourse}</td></tr>
     </table>
-    ${message ? `<div class="message-box">${message}</div>` : ""}
+    ${safeMessage ? `<div class="message-box">${safeMessage}</div>` : ""}
     <div class="footer">
       Sent from the Meridian College admissions enquiry form &mdash; ${new Date().toLocaleDateString("en-IN", { dateStyle: "long" })}
     </div>
@@ -40,45 +71,49 @@ function emailHtml({ name, phone, course, message }: { name: string; phone: stri
 </html>`;
 }
 
-exports.handler = async (event: { httpMethod: string; body: string | null; headers: Record<string, string> }) => {
+export const handler = async (event: { httpMethod: string; body: string | null }) => {
   if (event.httpMethod !== "POST") {
-    return { statusCode: 405, body: JSON.stringify({ error: "Method Not Allowed" }) };
+    return json(405, { error: "Method Not Allowed" });
   }
 
-  let body: { name?: string; phone?: string; course?: string; message?: string };
+  if (!RESEND_API_KEY) {
+    return json(500, { error: "Email service is not configured." });
+  }
+
+  let body: unknown;
   try {
     body = JSON.parse(event.body ?? "{}");
   } catch {
-    return { statusCode: 400, body: JSON.stringify({ error: "Request body is not valid JSON." }) };
+    return json(400, { error: "Request body is not valid JSON." });
   }
 
-  const { name, phone, course, message } = body;
+  const payload = body && typeof body === "object" ? (body as Record<string, unknown>) : {};
+  const name = typeof payload.name === "string" ? payload.name.trim() : "";
+  const phone = typeof payload.phone === "string" ? payload.phone.trim() : "";
+  const course = typeof payload.course === "string" ? payload.course.trim() : "";
+  const message = typeof payload.message === "string" ? payload.message.trim() : "";
 
   if (!name || !phone || !course) {
-    return {
-      statusCode: 400,
-      body: JSON.stringify({ error: "Name, phone, and course are required." }),
-    };
+    return json(400, { error: "Name, phone, and course are required." });
   }
 
-  const { error } = await resend.emails.send({
-    from: FROM_EMAIL,
-    to: [TO_EMAIL],
-    subject: `New Enquiry: ${course} \u2014 ${name}`,
-    html: emailHtml({ name, phone, course, message: message ?? "" }),
-    replyTo: TO_EMAIL,
-  });
+  try {
+    const { error } = await resend.emails.send({
+      from: FROM_EMAIL,
+      to: [TO_EMAIL],
+      subject: `New Enquiry: ${safeSubjectValue(course)} - ${safeSubjectValue(name)}`,
+      html: emailHtml({ name, phone, course, message }),
+      replyTo: TO_EMAIL,
+    });
 
-  if (error) {
+    if (error) {
+      console.error("Resend error:", error);
+      return json(500, { error: "Failed to send email. Please try again." });
+    }
+  } catch (error) {
     console.error("Resend error:", error);
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ error: "Failed to send email. Please try again." }),
-    };
+    return json(500, { error: "Failed to send email. Please try again." });
   }
 
-  return {
-    statusCode: 200,
-    body: JSON.stringify({ success: true }),
-  };
+  return json(200, { success: true });
 };

@@ -26,7 +26,7 @@ export type GalleryImage = {
 };
 
 export const college = {
-  name: "Meridian College of Education",
+  name: "Meridian College of Professional Studies",
   tagline: "Be educated. Be empowered.",
   philosophy:
     "Education should build knowledge, practical skill, confidence, and the discipline to keep learning.",

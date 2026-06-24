@@ -133,7 +133,7 @@ export function Home() {
           <div className="overflow-hidden rounded-md border border-meridian-line bg-meridian-mist shadow-card">
             <img
               src="/images/meridian-logo.jpeg"
-              alt="Meridian College of Education logo"
+              alt="Meridian College of Professional Studies logo"
               className="aspect-[16/11] w-full object-contain p-8 sm:p-10"
             />
           </div>

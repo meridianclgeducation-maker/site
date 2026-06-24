@@ -12,7 +12,7 @@ export function ContactCta() {
             Ready to choose a career-focused course?
           </h2>
           <p className="mt-4 max-w-3xl text-base leading-8 text-white/72">
-            Speak with Meridian College of Education for course availability, timings, and admission guidance.
+            Speak with Meridian College of Professional Studies for course availability, timings, and admission guidance.
           </p>
         </div>
         <div className="flex flex-col gap-3 sm:flex-row lg:flex-col">
